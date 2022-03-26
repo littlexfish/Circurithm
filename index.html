@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>Circurithm Official</title>
+<link rel="icon" href="src/icon.ico" type="image/x-icon">
+<style>
+body {
+	margin: 0;
+	overflow: hidden;
+}
+</style>
+</head>
+
+<body>
+
+<canvas>It's a troll</canvas>
+
+<script>
+
+var canvas = document.getElementsByTagName('canvas')[0];
+var ctx;
+
+var col = []
+
+if(canvas.getContext) {
+	ctx = canvas.getContext('2d');
+	
+	for(let i = 0;i < 12;i++) {
+		let c = (Math.round((255 / 12) * i)).toString(16);
+		if(c.length == 1) c = "0" + c;
+		col.push("#CC66FF" + c);
+	}
+	
+	window.requestAnimationFrame(animDraw);
+}
+
+const maxFrame = 5;
+var frame = maxFrame;
+
+const maxCount = 12;
+var count = 0;
+
+const lineStartPos = 30;
+const lineLength = 50;
+
+function animDraw() {
+	if(frame >= maxFrame) {
+		let width = window.innerWidth;
+		let height = window.innerHeight;
+		
+		canvas.width = width;
+		canvas.height = height;
+		
+		ctx.fillStyle = "#88FF66";
+		ctx.fillRect(0, 0, width, height);
+		
+		let center = [width / 2,height / 2];
+		
+		colors();
+		
+		ctx.lineWidth = 10;
+		ctx.lineCap = "round";
+		
+		for(let i = 0;i < 12;i++) {
+			let deg = i * (360 / 12);
+			let rad = deg * (Math.PI / 180);
+			
+			let x = Math.cos(rad);
+			let y = Math.sin(rad);
+			
+			
+			ctx.strokeStyle = col[i];
+			ctx.beginPath();
+			ctx.moveTo(center[0] + x * lineStartPos, center[1] + y * lineStartPos);
+			ctx.lineTo(center[0] + x * lineLength, center[1] + y * lineLength);
+			ctx.stroke();
+			
+		}
+		frame = 0;
+		count++;
+		if(count >= maxCount) {
+			count = 0;
+		}
+	}
+	frame++;
+	
+	window.requestAnimationFrame(animDraw);
+}
+
+function colors() {
+	let tmp = []
+	
+	tmp.push(col[11]);
+	
+	for(let i = 0;i < 11;i++) {
+		tmp.push(col[i]);
+	}
+	col = tmp;
+}
+
+</script>
+
+</body>
+
+</html>
